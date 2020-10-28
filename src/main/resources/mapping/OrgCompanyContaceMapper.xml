@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exp.shuadan.mapper.OrgCompanyContactMapper">
+
+    <resultMap id="BaseResultMap" type="com.exp.shuadan.entity.OrgCompanyContact">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="creditCode" jdbcType="VARCHAR" property="creditCode" />
+        <result column="regNumber" jdbcType="VARCHAR" property="regNumber" />
+        <result column="companyName" jdbcType="VARCHAR" property="companyName" />
+        <result column="faRen" jdbcType="VARCHAR" property="faRen" />
+        <result column="areaCode" jdbcType="VARCHAR" property="areaCode" />
+        <result column="areaName" jdbcType="VARCHAR" property="areaName" />
+        <result column="phoneArea" jdbcType="VARCHAR" property="phoneArea" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="webSite" jdbcType="VARCHAR" property="webSite" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="businessStatus" jdbcType="VARCHAR" property="businessStatus" />
+        <result column="bussinessDes" jdbcType="VARCHAR" property="bussinessDes" />
+    </resultMap>
+
+    <select id="getCompantContact" resultType="com.exp.shuadan.entity.OrgCompanyContact">
+        select * from org_company_contact where companyName = #{companyName};
+    </select>
+
+    <insert id="add" parameterType="com.exp.shuadan.entity.OrgCompanyContact">
+        INSERT INTO
+        org_company_contact
+        (   creditCode,
+            regNumber,
+            companyName,
+            faRen,
+            areaCode,
+            areaName,
+            phoneArea,
+            phone,
+            email,
+            webSite,
+            address,
+            businessStatus,
+            bussinessDes
+        )
+        VALUES
+        (   #{creditCode},
+            #{regNumber},
+            #{companyName},
+            #{faRen},
+            #{areaCode},
+            #{areaName},
+            #{phoneArea},
+            #{phone},
+            #{email},
+            #{webSite},
+            #{address},
+            #{businessStatus},
+            #{bussinessDes}
+            )
+    </insert>
+
+</mapper>
