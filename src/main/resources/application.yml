@@ -1,4 +1,10 @@
 
 spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
   profiles:
     active: mysql
+server:
+  port: 8080
