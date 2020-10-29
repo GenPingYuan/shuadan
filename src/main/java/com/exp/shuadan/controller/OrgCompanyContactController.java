@@ -1,6 +1,7 @@
 package com.exp.shuadan.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.exp.shuadan.entity.CompanyInfo;
 import com.exp.shuadan.entity.OrgCompanyContact;
@@ -13,6 +14,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,6 +31,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/orgContact")
+@EnableAsync
 public class OrgCompanyContactController {
 
     private String sessionToken;
@@ -50,9 +54,9 @@ public class OrgCompanyContactController {
 
     @RequestMapping("/getByCompName/{companyName}")
     public ReturnMessage getCompantContact(@PathVariable String companyName) throws Exception {
-        OrgCompanyContact orgCompanyContact = orgCompanyContactService.getCompantContact(companyName);
+        int orgCompanyContact = orgCompanyContactService.getCompanyByCompanyPy(companyName);
 
-        if (orgCompanyContact == null) {
+        if (orgCompanyContact == 0) {
             HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
             Object sessionTokenAttri = session.getAttribute("orgToken");
             // 获取sessionToken
@@ -60,14 +64,16 @@ public class OrgCompanyContactController {
                 getToken(session);
             }
 
-            CompanyInfo[] ciArr =  combineIndexSearch(companyName);
+            CompanyInfo[] ciArr = combineIndexSearch(companyName);
             for (int i = 0; i < ciArr.length; i++) {
                 CompanyInfo ci = ciArr[i];
-                getCompanyConact(ci.getCompanyName());
+                if(ci != null) {
+                    getCompanyConact(ci.getCompanyName(),companyName);
+                }
             }
             return new ReturnMessage("200", "1", "成功", ciArr);
-        }else {
-            ReturnMessage rm = new ReturnMessage("200", "1", "成功", orgCompanyContact);
+        } else {
+            ReturnMessage rm = new ReturnMessage("200", "1", "成功", null);
             return rm;
         }
     }
@@ -116,28 +122,31 @@ public class OrgCompanyContactController {
         return result;
     }
 
-    private void getCompanyConact(String companyName) throws Exception {
+    private void getCompanyConact(String companyName,String companyPy) throws Exception {
         HashMap<String, Object> map = new HashMap<>();
         map.put("token", this.sessionToken);
         map.put("type", "JSON");
         map.put("companyName", companyName);
         map.put("page", "1");
         map.put("pagesize", "10000");
-        String getCtResp = HttpUtil.get(getCompanyContact,map);
-            //使用fastjson将字符串转换为需要的对象
-            JSONObject ctjo = JSON.parseObject(getCtResp);
-            log.info(getCtResp);
-            ReturnMessage ctrm = ctjo.toJavaObject(ReturnMessage.class);
-            log.info(ctrm.toString());
-            OrgCompanyContact[] ocArr = ctrm.resultToArr(OrgCompanyContact.class);
-            for (int i = 0; i < ocArr.length; i++) {
-                this.add(ocArr[i]);
-            }
+        String getCtResp = HttpUtil.get(getCompanyContact, map);
+        //使用fastjson将字符串转换为需要的对象
+        JSONObject ctjo = JSON.parseObject(getCtResp);
+        log.info(getCtResp);
+        ReturnMessage ctrm = ctjo.toJavaObject(ReturnMessage.class);
+        log.info(ctrm.toString());
+        OrgCompanyContact[] ocArr = ctrm.resultToArr(OrgCompanyContact.class);
+        for (int i = 0; i < ocArr.length; i++) {
+            OrgCompanyContact occ = ocArr[i];
+            occ.setCompanyPy(companyPy);
+            this.add(occ);
+        }
     }
 
 
     /**
      * 上传Excel文件并读取
+     *
      * @param request
      * @return
      * @throws Exception
@@ -158,9 +167,24 @@ public class OrgCompanyContactController {
         for (int i = 0; i < list.size(); i++) {
             List<Object> lo = list.get(i);
             //TODO 随意发挥
-            System.out.println(lo);
-
+            String companyName = lo.get(0).toString();
+//            Object[] jr = JSONArray.parseArray(lo.toString()).toArray();
+//            String companyName = (String)jr[0];
+            log.info(companyName);
+            //
+            companyName = companyName.toLowerCase();
+            companyName = companyName.replace(".", "");
+            companyName = companyName.replace("ltd", "");
+            companyName = companyName.replace("company", "");
+            companyName = companyName.replace("co", "");
+            companyName = companyName.replace(" ", "");
+            companyName = companyName.replace("-", "");
+            companyName = companyName.replace("technology", "");
+            companyName = companyName.replace("technologies", "");
+            log.info(companyName);
+            this.getCompantContact(companyName);
         }
         return "上传成功";
+
     }
 }

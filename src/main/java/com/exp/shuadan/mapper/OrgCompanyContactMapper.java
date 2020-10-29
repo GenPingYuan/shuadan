@@ -11,4 +11,7 @@ public interface OrgCompanyContactMapper {
     OrgCompanyContact getCompantContact(String companyName);
 
     int add(OrgCompanyContact info);
+
+
+    int getCompanyByCompanyPy(String companyName);
 }

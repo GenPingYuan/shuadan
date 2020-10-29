@@ -3,6 +3,7 @@ package com.exp.shuadan.entity;
 public class OrgCompanyContact {
 
     public Integer id;
+    public String companyPy;
     /*
 	   信用代码
     **/
@@ -170,6 +171,14 @@ public class OrgCompanyContact {
 
     public void setBussinessDes(String bussinessDes) {
         this.bussinessDes = bussinessDes;
+    }
+
+    public String getCompanyPy() {
+        return companyPy;
+    }
+
+    public void setCompanyPy(String companyPy) {
+        this.companyPy = companyPy;
     }
 
     @Override

@@ -7,6 +7,7 @@
         <result column="creditCode" jdbcType="VARCHAR" property="creditCode" />
         <result column="regNumber" jdbcType="VARCHAR" property="regNumber" />
         <result column="companyName" jdbcType="VARCHAR" property="companyName" />
+        <result column="companyPy" jdbcType="VARCHAR" property="companyPy" />
         <result column="faRen" jdbcType="VARCHAR" property="faRen" />
         <result column="areaCode" jdbcType="VARCHAR" property="areaCode" />
         <result column="areaName" jdbcType="VARCHAR" property="areaName" />
@@ -20,7 +21,11 @@
     </resultMap>
 
     <select id="getCompantContact" resultType="com.exp.shuadan.entity.OrgCompanyContact">
-        select * from org_company_contact where companyName = #{companyName};
+        select * from org_company_contact where companyPy = #{companyName};
+    </select>
+
+    <select id="getCompanyByCompanyPy" resultType="java.lang.Integer">
+        select count(*) from org_company_contact where companyPy = #{companyName};
     </select>
 
     <insert id="add" parameterType="com.exp.shuadan.entity.OrgCompanyContact">
@@ -38,7 +43,8 @@
             webSite,
             address,
             businessStatus,
-            bussinessDes
+            bussinessDes,
+            companyPy
         )
         VALUES
         (   #{creditCode},
@@ -53,7 +59,8 @@
             #{webSite},
             #{address},
             #{businessStatus},
-            #{bussinessDes}
+            #{bussinessDes},
+            #{companyPy}
             )
     </insert>
 

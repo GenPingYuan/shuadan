@@ -4,6 +4,7 @@ package com.exp.shuadan.service;
 import com.exp.shuadan.entity.OrgCompanyContact;
 import com.exp.shuadan.mapper.OrgCompanyContactMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,5 +19,9 @@ public class OrgCompanyContactService {
 
     public  int add(OrgCompanyContact info) {
         return orgCompanyContactMapper.add(info);
+    }
+
+    public int getCompanyByCompanyPy(String companyName) {
+        return orgCompanyContactMapper.getCompanyByCompanyPy(companyName);
     }
 }

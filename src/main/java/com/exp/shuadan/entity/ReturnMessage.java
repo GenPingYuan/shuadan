@@ -72,17 +72,19 @@ public class ReturnMessage {
 
     public <T> T[] resultToArr(Class<T> input) {
         System.out.println(this.result);
-        String json = JSON.toJSONString(this.result);
         T[] array = (T[]) Array.newInstance(input, totalCount);
-            try {
-                array[0] = JSONObject.parseObject(json).toJavaObject(input);
-            }catch (Exception e) {
-                Object[] objArr = JSONArray.parseArray(json).toArray();
-                for (int i = 0; i < objArr.length; i++) {
-                    String tJson = JSON.toJSONString(objArr[i]);
-                    array[i] = JSONObject.parseObject(tJson).toJavaObject(input);
-                }
+        if(this.totalCount == 0) return array;
+        String json = JSON.toJSONString(this.result);
+
+        try {
+            array[0] = JSONObject.parseObject(json).toJavaObject(input);
+        }catch (Exception e) {
+            Object[] objArr = JSONArray.parseArray(json).toArray();
+            for (int i = 0; i < objArr.length; i++) {
+                String tJson = JSON.toJSONString(objArr[i]);
+                array[i] = JSONObject.parseObject(tJson).toJavaObject(input);
             }
+        }
         return array;
     }
 }

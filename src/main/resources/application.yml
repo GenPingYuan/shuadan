@@ -4,6 +4,8 @@ spring:
     view:
       prefix: /templates/
       suffix: .html
+    async:
+      request-timeout: 200000s
   profiles:
     active: mysql
 server:
