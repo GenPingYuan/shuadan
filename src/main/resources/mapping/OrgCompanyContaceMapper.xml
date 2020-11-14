@@ -44,7 +44,8 @@
             address,
             businessStatus,
             bussinessDes,
-            companyPy
+            companyPy,
+            createTime
         )
         VALUES
         (   #{creditCode},
@@ -60,7 +61,8 @@
             #{address},
             #{businessStatus},
             #{bussinessDes},
-            #{companyPy}
+            #{companyPy},
+            now()
             )
     </insert>
 

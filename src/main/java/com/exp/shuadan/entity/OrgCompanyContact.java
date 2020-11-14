@@ -1,5 +1,7 @@
 package com.exp.shuadan.entity;
 
+import java.sql.Date;
+
 public class OrgCompanyContact {
 
     public Integer id;
@@ -68,6 +70,16 @@ public class OrgCompanyContact {
         经营范围
     **/
     public String bussinessDes;
+
+    public String createTime;
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 
     public String getCreditCode() {
         return creditCode;
