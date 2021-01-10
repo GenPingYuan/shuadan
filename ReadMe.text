@@ -1,0 +1,22 @@
+项目说明：
+
+一、表创建 新建名为amazon的库并创建product表，sql如下：
+
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL COMMENT '产品名称',
+  `price` decimal(10,2) NOT NULL COMMENT '产品价格',
+  `image` blob NOT NULL COMMENT '产品图片',
+  `profile` varchar(2000) NOT NULL COMMENT '产品简介',
+  `detail` varchar(2000) NOT NULL COMMENT '产品详情',
+  `count` int(11) NOT NULL COMMENT '产品数量',
+  `country` varchar(64) NOT NULL COMMENT '产品地区',
+  `create_time` date NOT NULL COMMENT '创建时间',
+  `update_time` date NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+二、项目运行环境
+JDK1.8
+Maven
+springboot2.3.4.RELEASE

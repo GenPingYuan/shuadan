@@ -1,20 +1,12 @@
 package com.exp.shuadan.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.exp.shuadan.entity.CompanyInfo;
 import com.exp.shuadan.entity.OrgCompanyContact;
 import com.exp.shuadan.entity.ReturnMessage;
 import com.exp.shuadan.service.ExcelService;
 import com.exp.shuadan.service.OrgCompanyContactService;
-import com.seepine.http.util.HttpUtil;
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -25,12 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
-import java.sql.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/orgContact")
