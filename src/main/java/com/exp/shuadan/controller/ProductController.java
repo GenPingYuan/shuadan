@@ -75,25 +75,23 @@ public class ProductController {
         if (product == null || product.getId() == null) {
             throw new DataCheckException(500, "产品信息为空或者产品ID为空");
         }
+        Product productOld = productService.getProductById(product.getId());
         // 判断是否有文件
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
         if(!file.isEmpty()){
             // 上传新图片
             String imageUrl = uploadFileUtil.uploadFile(file, null);
             product.setImageUrl(imageUrl);
-
-            // 成功后把原图片删除
-            Product productOld = productService.getProductById(product.getId());
-            String fileName = productOld.getImageUrl();
-            String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
-            File fileOld = new File(basePath + fileName);
-            if (fileOld.exists()) {//文件是否存在
-                fileOld.delete();
-            }
-
         }
         product.setUpdateTime(new Date());
         productService.updateProduct(product);
+        // 成功后把原图片删除
+        String fileName = productOld.getImageUrl();
+        String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
+        File fileOld = new File(basePath + fileName);
+        if (fileOld.exists()) {//文件是否存在
+            fileOld.delete();
+        }
         return resp;
     }
 }
