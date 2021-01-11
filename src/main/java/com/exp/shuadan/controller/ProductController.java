@@ -78,7 +78,11 @@ public class ProductController {
         // 判断是否有文件
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
         if(!file.isEmpty()){
-            // 先把原图片删除
+            // 上传新图片
+            String imageUrl = uploadFileUtil.uploadFile(file, null);
+            product.setImageUrl(imageUrl);
+
+            // 成功后把原图片删除
             Product productOld = productService.getProductById(product.getId());
             String fileName = productOld.getImageUrl();
             String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
@@ -86,9 +90,7 @@ public class ProductController {
             if (fileOld.exists()) {//文件是否存在
                 fileOld.delete();
             }
-            // 上传新图片
-            String imageUrl = uploadFileUtil.uploadFile(file, null);
-            product.setImageUrl(imageUrl);
+
         }
         product.setUpdateTime(new Date());
         productService.updateProduct(product);
