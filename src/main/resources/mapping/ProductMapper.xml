@@ -34,6 +34,10 @@
         </if>
     </select>
 
+    <select id="getProductById" resultMap="BaseResultMap">
+        select * from product where id = #{id}
+    </select>
+
     <insert id="addProduct" parameterType="com.exp.shuadan.entity.product.Product">
       insert into product
       (name, price, image_url, profile, detail, count, country, create_time, update_time)
