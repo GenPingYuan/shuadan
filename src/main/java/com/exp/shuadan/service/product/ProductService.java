@@ -24,6 +24,10 @@ public class ProductService {
         return new PageInfo<>(list);
     }
 
+    public Product getProductById(int id)throws Exception{
+        return productMapper.getProductById(id);
+    }
+
     public void addProduct(Product product) throws Exception{
         productMapper.addProduct(product);
     }

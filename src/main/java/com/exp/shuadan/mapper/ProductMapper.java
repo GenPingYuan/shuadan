@@ -10,6 +10,8 @@ import java.util.List;
 public interface ProductMapper {
     // 获取产品列表
     List<Product> getProduct(ProductSeachModel model) throws Exception;
+    // 根据产品ID获取产品信息
+    Product getProductById(int id) throws Exception;
     // 添加产品
     void addProduct(Product product) throws Exception;
     // 删除产品

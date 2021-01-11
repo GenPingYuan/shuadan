@@ -19,7 +19,7 @@ public class Product {
     @DecimalMin(value = "0")
     private BigDecimal price;
 
-    private byte[] image;
+    private String imageUrl;
 
     @NotNull(message = "产品简介不能为空")
     private String profile;
