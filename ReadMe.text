@@ -6,7 +6,7 @@ CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL COMMENT '产品名称',
   `price` decimal(10,2) NOT NULL COMMENT '产品价格',
-  `image` blob NOT NULL COMMENT '产品图片',
+  `image_url` varchar(255) NOT NULL COMMENT '产品图片路径',
   `profile` varchar(2000) NOT NULL COMMENT '产品简介',
   `detail` varchar(2000) NOT NULL COMMENT '产品详情',
   `count` int(11) NOT NULL COMMENT '产品数量',

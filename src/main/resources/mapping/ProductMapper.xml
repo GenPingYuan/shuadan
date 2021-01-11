@@ -3,30 +3,30 @@
 <mapper namespace="com.exp.shuadan.mapper.ProductMapper">
 
     <resultMap id="BaseResultMap" type="com.exp.shuadan.entity.product.Product">
-        <result column="id" jdbcType="INTEGER" property="id" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="price" jdbcType="DECIMAL" property="price" />
-        <result column="image" jdbcType="BLOB" property="image" />
-        <result column="profile" jdbcType="VARCHAR" property="profile" />
-        <result column="detail" jdbcType="VARCHAR" property="detail" />
-        <result column="count" jdbcType="INTEGER" property="count" />
-        <result column="country" jdbcType="VARCHAR" property="country" />
-        <result column="create_time" jdbcType="DATE" property="createTime" />
-        <result column="update_time" jdbcType="DATE" property="updateTime" />
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="profile" jdbcType="VARCHAR" property="profile"/>
+        <result column="detail" jdbcType="VARCHAR" property="detail"/>
+        <result column="count" jdbcType="INTEGER" property="count"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="create_time" jdbcType="DATE" property="createTime"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
     </resultMap>
 
     <select id="getProduct" resultMap="BaseResultMap" parameterType="com.exp.shuadan.entity.product.ProductSeachModel">
         select * from product where 1=1
         <if test="startTime != null and endTime != null">
-          and create_time &gt;= #{startTime} and create_time &lt;= #{endTime}
+            and create_time &gt;= #{startTime} and create_time &lt;= #{endTime}
         </if>
 
         <if test="startPrice != null and endPrice != null">
-          and price &gt;= #{startPrice} and price &lt;= #{endPrice}
+            and price &gt;= #{startPrice} and price &lt;= #{endPrice}
         </if>
 
         <if test="name != null and name != ''">
-          and name like "%"#{name}"%"
+            and name like "%"#{name}"%"
         </if>
 
         <if test="country != null and country != ''">
@@ -36,21 +36,21 @@
 
     <insert id="addProduct" parameterType="com.exp.shuadan.entity.product.Product">
       insert into product
-      (name, price, image, profile, detail, count, country, create_time, update_time)
+      (name, price, image_url, profile, detail, count, country, create_time, update_time)
       values
-      (#{name}, #{price}, #{image}, #{profile}, #{detail}, #{count}, #{country}, #{createTime}, #{updateTime})
+      (#{name}, #{price}, #{imageUrl}, #{profile}, #{detail}, #{count}, #{country}, #{createTime}, #{updateTime})
     </insert>
 
     <delete id="delProduct">
         delete from product where id = #{id}
     </delete>
 
-    <update id="updateProduct"  parameterType="com.exp.shuadan.entity.product.Product">
+    <update id="updateProduct" parameterType="com.exp.shuadan.entity.product.Product">
         UPDATE product
         <trim prefix="set" suffixOverrides=",">
             <if test="name!=null">name=#{name},</if>
             <if test="price!=null">price=#{price},</if>
-            <if test="image!=null">image=#{image},</if>
+            <if test="imageUrl!=null">image_url=#{imageUrl},</if>
             <if test="profile!=null">profile=#{profile},</if>
             <if test="detail!=null">detail=#{detail},</if>
             <if test="count!=null">count=#{count},</if>

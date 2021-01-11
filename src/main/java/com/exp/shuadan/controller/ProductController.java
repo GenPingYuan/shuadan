@@ -5,6 +5,7 @@ import com.exp.shuadan.config.ResponseModel;
 import com.exp.shuadan.entity.product.Product;
 import com.exp.shuadan.entity.product.ProductSeachModel;
 import com.exp.shuadan.service.product.ProductService;
+import com.exp.shuadan.util.UploadFileUtil;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -13,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.Date;
 
 @Validated
@@ -24,6 +23,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private UploadFileUtil uploadFileUtil;
 
     @GetMapping
     public ResponseModel getProduct(@Validated @RequestBody ProductSeachModel model) throws Exception {
@@ -41,15 +43,8 @@ public class ProductController {
         product.setUpdateTime(now);
         // 得到文件
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-        InputStream ins = file.getInputStream();
-        byte[] buffer = new byte[1024];
-        int len;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while ((len = ins.read(buffer)) != -1) {
-            bos.write(buffer, 0, len);
-        }
-        bos.flush();
-        product.setImage(bos.toByteArray());
+        String imageUrl = uploadFileUtil.uploadFile(file, null);
+        product.setImageUrl(imageUrl);
         productService.addProduct(product);
         return resp;
     }
