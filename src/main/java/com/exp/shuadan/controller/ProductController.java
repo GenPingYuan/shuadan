@@ -25,8 +25,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
-    public ResponseModel getProduct(@Validated @RequestBody ProductSeachModel model) throws Exception {
+    @PostMapping(value = "getProduct")
+    public ResponseModel getProduct(HttpServletRequest request, @Validated @RequestBody ProductSeachModel model) throws Exception {
         ResponseModel resp = new ResponseModel <>();
         PageInfo <Product> pageList = productService.getProduct(model);
         resp.setData(pageList);
