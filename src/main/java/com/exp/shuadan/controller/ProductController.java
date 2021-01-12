@@ -57,12 +57,13 @@ public class ProductController {
         return resp;
     }
 
-    @DeleteMapping
+    @PostMapping(value = "deleteProduct")
     public ResponseModel delProduct(@RequestBody JSONObject params) throws Exception {
         ResponseModel resp = new ResponseModel<>();
         if (params == null || params.isEmpty()) {
             throw new DataCheckException(500, "请求参数为空");
         }
+        log.info(params.toString());
         String ids = params.getJSONObject("ids").toJSONString();
         List<Integer> idList = JSON.parseObject(ids, new TypeReference<List<Integer>>() {
         });
