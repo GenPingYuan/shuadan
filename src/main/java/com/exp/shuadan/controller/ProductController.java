@@ -1,6 +1,8 @@
 package com.exp.shuadan.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.exp.shuadan.config.DataCheckException;
 import com.exp.shuadan.config.ResponseModel;
 import com.exp.shuadan.entity.product.Product;
@@ -20,7 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 @Validated
 @RestController
@@ -55,19 +57,25 @@ public class ProductController {
         return resp;
     }
 
-    @DeleteMapping("{id}")
-    public ResponseModel delProduct(@PathVariable(value = "id") Integer id, @RequestBody Map<String, String> param) throws Exception {
+    @DeleteMapping
+    public ResponseModel delProduct(@RequestBody JSONObject params) throws Exception {
         ResponseModel resp = new ResponseModel<>();
-        productService.delProduct(id);
-        if (param == null || param.isEmpty()) {
+        if (params == null || params.isEmpty()){
             throw new DataCheckException(500, "请求参数为空");
         }
-        // 删除图片
-        String fileName = param.get("fileName");
-        String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
-        File file = new File(basePath + fileName);
-        if (file.exists()) {//文件是否存在
-            file.delete();
+        String ids = params.getJSONObject("ids").toJSONString();
+        List<Integer> idList = JSON.parseObject(ids, new TypeReference<List<Integer>>(){});
+        for (Integer id: idList) {
+            // 获取产品信息
+            Product product = productService.getProductById(id);
+            productService.delProduct(id);
+            // 删除图片
+            String fileName = product.getImageUrl();
+            String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
+            File file = new File(basePath + fileName);
+            if (file.exists()) {//文件是否存在
+                file.delete();
+            }
         }
         return resp;
     }
