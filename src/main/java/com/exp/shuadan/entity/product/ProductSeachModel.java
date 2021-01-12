@@ -15,7 +15,6 @@ public class ProductSeachModel {
     private String name;
     private BigDecimal startPrice;
     private BigDecimal endPrice;
-    private int count;
     private String country;
     private Date startTime;
     private Date endTime;
