@@ -1,5 +1,6 @@
 package com.exp.shuadan.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.exp.shuadan.config.DataCheckException;
 import com.exp.shuadan.config.ResponseModel;
 import com.exp.shuadan.entity.product.Product;
@@ -7,6 +8,8 @@ import com.exp.shuadan.entity.product.ProductSeachModel;
 import com.exp.shuadan.service.product.ProductService;
 import com.exp.shuadan.util.UploadFileUtil;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
@@ -24,13 +27,15 @@ import java.util.Map;
 @RequestMapping("/product/")
 public class ProductController {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductController.class);
+
     @Autowired
     private ProductService productService;
 
     @Autowired
     private UploadFileUtil uploadFileUtil;
 
-    @GetMapping
+    @PostMapping(value = "getProduct")
     public ResponseModel getProduct(@Validated @RequestBody ProductSeachModel model) throws Exception {
         ResponseModel resp = new ResponseModel<>();
         PageInfo<Product> pageList = productService.getProduct(model);
@@ -38,15 +43,16 @@ public class ProductController {
         return resp;
     }
 
-    @PostMapping
-    public ResponseModel addProduct(HttpServletRequest request, @Validated @RequestBody Product product) throws Exception {
+    @PostMapping(value = "addProduct")
+    public ResponseModel addProduct(HttpServletRequest request, Product product, @RequestParam(value = "file") MultipartFile cardPic) throws Exception {
         ResponseModel resp = new ResponseModel<>();
         Date now = new Date();
         product.setCreateTime(now);
         product.setUpdateTime(now);
+        log.info(JSON.toJSONString(product));
         // 得到文件
-        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-        String imageUrl = uploadFileUtil.uploadFile(file, null);
+//        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
+        String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
         product.setImageUrl(imageUrl);
         productService.addProduct(product);
         return resp;
@@ -78,7 +84,7 @@ public class ProductController {
         Product productOld = productService.getProductById(product.getId());
         // 判断是否有文件
         MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-        if(!file.isEmpty()){
+        if (!file.isEmpty()) {
             // 上传新图片
             String imageUrl = uploadFileUtil.uploadFile(file, null);
             product.setImageUrl(imageUrl);
