@@ -28,7 +28,7 @@ public class UploadFileUtil {
         // 文件后缀 例如：.png
         String fileSuffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         // uuid 生成文件名
-        String uuid = String.valueOf(UUID.randomUUID());
+        String uuid = String.valueOf(UUID.randomUUID()).replace("-", "");
         // 根路径，在 resources/static/upload
         String basePath = ResourceUtils.getURL("classpath:").getPath() + "static/image/" + (StringUtils.isNotBlank(dir) ? (dir + "/") : "");
         // 新的文件名，使用uuid生成文件名
