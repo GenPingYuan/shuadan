@@ -60,12 +60,13 @@ public class ProductController {
     @DeleteMapping
     public ResponseModel delProduct(@RequestBody JSONObject params) throws Exception {
         ResponseModel resp = new ResponseModel<>();
-        if (params == null || params.isEmpty()){
+        if (params == null || params.isEmpty()) {
             throw new DataCheckException(500, "请求参数为空");
         }
         String ids = params.getJSONObject("ids").toJSONString();
-        List<Integer> idList = JSON.parseObject(ids, new TypeReference<List<Integer>>(){});
-        for (Integer id: idList) {
+        List<Integer> idList = JSON.parseObject(ids, new TypeReference<List<Integer>>() {
+        });
+        for (Integer id : idList) {
             // 获取产品信息
             Product product = productService.getProductById(id);
             productService.delProduct(id);
@@ -80,18 +81,17 @@ public class ProductController {
         return resp;
     }
 
-    @PutMapping
-    public ResponseModel updateProduct(HttpServletRequest request, @RequestBody Product product) throws Exception {
+    @PostMapping(value = "updateProduct")
+    public ResponseModel updateProduct(HttpServletRequest request, Product product, @RequestParam(value = "file", required = false) MultipartFile cardPic) throws Exception {
         ResponseModel resp = new ResponseModel<>();
         if (product == null || product.getId() == null) {
             throw new DataCheckException(500, "产品信息为空或者产品ID为空");
         }
         Product productOld = productService.getProductById(product.getId());
         // 判断是否有文件
-        MultipartFile file = ((MultipartHttpServletRequest) request).getFile("file");
-        if (!file.isEmpty()) {
+        if (cardPic != null && !cardPic.isEmpty()) {
             // 上传新图片
-            String imageUrl = uploadFileUtil.uploadFile(file, null);
+            String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
             product.setImageUrl(imageUrl);
         }
         product.setUpdateTime(new Date());
