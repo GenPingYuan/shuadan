@@ -17,7 +17,6 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -64,7 +63,7 @@ public class ProductController {
             throw new DataCheckException(500, "请求参数为空");
         }
         log.info(params.toString());
-        String ids = params.getJSONObject("ids").toJSONString();
+        String ids = JSONObject.toJSONString(params.get("ids"));
         List<Integer> idList = JSON.parseObject(ids, new TypeReference<List<Integer>>() {
         });
         for (Integer id : idList) {
@@ -98,11 +97,13 @@ public class ProductController {
         product.setUpdateTime(new Date());
         productService.updateProduct(product);
         // 成功后把原图片删除
-        String fileName = productOld.getImageUrl();
-        String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
-        File fileOld = new File(basePath + fileName);
-        if (fileOld.exists()) {//文件是否存在
-            fileOld.delete();
+        if (cardPic != null && !cardPic.isEmpty()){
+            String fileName = productOld.getImageUrl();
+            String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
+            File fileOld = new File(basePath + fileName);
+            if (fileOld.exists()) {//文件是否存在
+                fileOld.delete();
+            }
         }
         return resp;
     }
