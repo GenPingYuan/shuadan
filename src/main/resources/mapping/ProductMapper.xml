@@ -11,8 +11,8 @@
         <result column="detail" jdbcType="VARCHAR" property="detail"/>
         <result column="count" jdbcType="INTEGER" property="count"/>
         <result column="country" jdbcType="VARCHAR" property="country"/>
-        <result column="create_time" jdbcType="DATE" property="createTime"/>
-        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
     <select id="getProduct" resultMap="BaseResultMap" parameterType="com.exp.shuadan.entity.product.ProductSeachModel">
