@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,9 @@ import java.util.List;
 public class ProductController {
 
     private static final Logger log = LoggerFactory.getLogger(ProductController.class);
+
+    @Value("${upload.path}")
+    private String uploadPath;
 
     @Autowired
     private ProductService productService;
@@ -50,7 +54,7 @@ public class ProductController {
         product.setCreateTime(now);
         product.setUpdateTime(now);
         log.info(JSON.toJSONString(product));
-        String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
+        String imageUrl = uploadFileUtil.uploadFile(cardPic, "/image");
         product.setImageUrl(imageUrl);
         productService.addProduct(product);
         return resp;
@@ -72,8 +76,7 @@ public class ProductController {
             productService.delProduct(id);
             // 删除图片
             String fileName = product.getImageUrl();
-            String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
-            File file = new File(basePath + fileName);
+            File file = new File(fileName);
             if (file.exists()) {//文件是否存在
                 file.delete();
             }
@@ -91,7 +94,7 @@ public class ProductController {
         // 判断是否有文件
         if (cardPic != null && !cardPic.isEmpty()) {
             // 上传新图片
-            String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
+            String imageUrl = uploadFileUtil.uploadFile(cardPic, "/image");
             product.setImageUrl(imageUrl);
         }
         product.setUpdateTime(new Date());
@@ -99,8 +102,7 @@ public class ProductController {
         // 成功后把原图片删除
         if (cardPic != null && !cardPic.isEmpty()){
             String fileName = productOld.getImageUrl();
-            String basePath = ResourceUtils.getURL("classpath:").getPath() + "static";
-            File fileOld = new File(basePath + fileName);
+            File fileOld = new File(fileName);
             if (fileOld.exists()) {//文件是否存在
                 fileOld.delete();
             }

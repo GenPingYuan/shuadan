@@ -31,3 +31,6 @@ logging:
     com.exp.shuadan.mapper: DEBUG
   file:
     path: D://logs
+
+upload:
+  path: /upload/

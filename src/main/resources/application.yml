@@ -2,7 +2,8 @@ spring:
   application:
     name: shuadan
   profiles:
-    active: dev
+    active: pro
+
   mvc:
     view:
       prefix: /templates/
@@ -16,3 +17,5 @@ spring:
       max-request-size: 1024MB
 server:
   port: 8009
+  servlet:
+    context-path: /api/
