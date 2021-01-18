@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -56,8 +57,8 @@ public class ProductController {
     public ResponseModel addProduct(HttpServletRequest request, Product product, @RequestParam(value = "file") MultipartFile cardPic) throws Exception {
         ResponseModel resp = new ResponseModel<>();
         Date now = new Date();
-        product.setCreateTime(now);
-        product.setUpdateTime(now);
+        product.setCreateTime(new Timestamp(now.getTime()));
+        product.setUpdateTime(new Timestamp(now.getTime()));
         log.info(JSON.toJSONString(product));
         String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
         product.setImageUrl(imageUrl);
@@ -103,7 +104,7 @@ public class ProductController {
             String imageUrl = uploadFileUtil.uploadFile(cardPic, null);
             product.setImageUrl(imageUrl);
         }
-        product.setUpdateTime(new Date());
+        product.setUpdateTime(new Timestamp(new Date().getTime()));
         productService.updateProduct(product);
         // 成功后把原图片删除
         if (cardPic != null && !cardPic.isEmpty()){

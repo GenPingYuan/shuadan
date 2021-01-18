@@ -3,6 +3,10 @@ spring:
     name: shuadan
   profiles:
     active: dev
+  jackson:
+    #日期格式化
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
   mvc:
     view:
