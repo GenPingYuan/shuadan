@@ -36,6 +36,15 @@ public class ProductController {
     @Autowired
     private UploadFileUtil uploadFileUtil;
 
+    @PostMapping(value = "getProductById")
+    public ResponseModel getProductById(@Validated @RequestBody JSONObject params) throws Exception {
+        ResponseModel resp = new ResponseModel<>();
+        log.info(JSON.toJSONString(params));
+        Integer id = Integer.valueOf(params.get("id").toString());
+        Product pageList = productService.getProductById(id);
+        return new ResponseModel(200, true, "", pageList);
+    }
+
     @PostMapping(value = "getProduct")
     public ResponseModel getProduct(@Validated @RequestBody ProductSeachModel model) throws Exception {
         ResponseModel resp = new ResponseModel<>();

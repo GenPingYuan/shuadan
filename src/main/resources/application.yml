@@ -2,7 +2,7 @@ spring:
   application:
     name: shuadan
   profiles:
-    active: pro
+    active: dev
 
   mvc:
     view:
