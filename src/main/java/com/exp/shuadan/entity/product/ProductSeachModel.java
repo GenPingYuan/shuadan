@@ -17,6 +17,7 @@ public class ProductSeachModel {
     private BigDecimal startPrice;
     private BigDecimal endPrice;
     private String country;
+    private String buyType;
     private Timestamp startTime;
     private Timestamp endTime;
 }

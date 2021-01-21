@@ -19,7 +19,7 @@ public class ProductService {
     public PageInfo<Product> getProduct(ProductSeachModel model) throws Exception{
         int pageNum = model.getPageNum();
         int pageSize = model.getPageSize();
-        PageHelper.startPage(pageNum, pageSize,"create_time desc");
+        PageHelper.startPage(pageNum, pageSize,"if (length (sort) > 0, 1 , 99999), sort, create_time desc");
         List<Product> list = productMapper.getProduct(model);
         return new PageInfo<>(list);
     }

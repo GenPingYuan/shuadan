@@ -30,7 +30,7 @@ logging:
   level:
     com.exp.shuadan.mapper: DEBUG
   file:
-    path: /home/logs
+    path: /data/logs
 
 upload:
-  path: /home/upload/
+  path: /data/upload/

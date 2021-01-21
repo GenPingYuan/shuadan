@@ -11,6 +11,8 @@
         <result column="detail" jdbcType="VARCHAR" property="detail"/>
         <result column="count" jdbcType="INTEGER" property="count"/>
         <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="buy_type" jdbcType="VARCHAR" property="buyType"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -32,6 +34,10 @@
         <if test="country != null and country != ''">
             and country = #{country}
         </if>
+
+        <if test="buyType != null and buyType != ''">
+            and buy_type like "%"#{buyType}"%"
+        </if>
     </select>
 
     <select id="getProductById" resultMap="BaseResultMap">
@@ -40,9 +46,9 @@
 
     <insert id="addProduct" parameterType="com.exp.shuadan.entity.product.Product">
       insert into product
-      (name, price, image_url, profile, detail, count, country, create_time, update_time)
+      (name, price, image_url, profile, detail, count, country, sort, buy_type, create_time, update_time)
       values
-      (#{name}, #{price}, #{imageUrl}, #{profile}, #{detail}, #{count}, #{country}, #{createTime}, #{updateTime})
+      (#{name}, #{price}, #{imageUrl}, #{profile}, #{detail}, #{count}, #{country}, #{sort}, #{buyType}, #{createTime}, #{updateTime})
     </insert>
 
     <delete id="delProduct">
@@ -59,6 +65,8 @@
             <if test="detail!=null">detail=#{detail},</if>
             <if test="count!=null">count=#{count},</if>
             <if test="country!=null">country=#{country},</if>
+            <if test="sort!=null">sort=#{sort},</if>
+            <if test="buyType!=null">buy_type=#{buyType},</if>
             <if test="updateTime!=null">update_time=#{updateTime},</if>
         </trim>
         WHERE id=#{id}

@@ -34,6 +34,11 @@ public class Product {
     @NotNull(message = "产品所属地区不能为空")
     private String country;
 
+    private Integer sort;
+
+    @NotNull(message = "产品购买类型不能为空")
+    private String buyType;
+
     private Timestamp createTime;
     private Timestamp updateTime;
 }
